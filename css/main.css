@@ -1,0 +1,256 @@
+/* Main CSS for Design Editor */
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #f5f5f5;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Button styles */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+button:hover {
+  background-color: #e0e0e0;
+}
+
+button:active {
+  background-color: #d0d0d0;
+}
+
+/* Form elements */
+input, select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #2196f3;
+}
+
+/* Property fields */
+.property-field {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.property-field label {
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.property-field input,
+.property-field select {
+  width: 100%;
+}
+
+/* Color field specific styles */
+.property-field input[type="color"] {
+  height: 30px;
+  padding: 2px;
+}
+
+.property-field input[type="checkbox"] {
+  width: auto;
+  margin-right: 6px;
+  margin-top: 8px;
+}
+
+.property-field input[type="checkbox"] + label {
+  display: inline;
+  font-weight: normal;
+}
+
+/* Export notification styles */
+.export-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Export dialog styles */
+.export-dialog-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.export-dialog {
+  background-color: white;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  width: 400px;
+  max-width: 90%;
+}
+
+.export-dialog h2 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.export-dialog label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.export-dialog input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.export-dialog input[type="range"] {
+  margin-top: 5px;
+}
+
+.export-dialog .button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.export-dialog button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.export-dialog button.cancel {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+}
+
+.export-dialog button.export {
+  background-color: #2196F3;
+  color: white;
+  border: none;
+}
+
+.export-dialog button.preview {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+/* Export preview styles */
+.export-preview-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.export-preview {
+  background-color: white;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  max-width: 80%;
+  max-height: 80%;
+  overflow: auto;
+  position: relative;
+}
+
+.export-preview img {
+  max-width: 100%;
+  display: block;
+}
+
+.export-preview button.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.export-preview button.download {
+  margin-top: 15px;
+  padding: 8px 16px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Responsive styles for export functionality */
+@media (max-width: 768px) {
+  .export-dialog {
+    width: 90%;
+    padding: 15px;
+  }
+  
+  .export-preview {
+    max-width: 95%;
+    max-height: 95%;
+    padding: 15px;
+  }
+}
