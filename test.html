@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Editor Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        .test-section {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-left: 4px solid #2196F3;
+            background-color: #f9f9f9;
+        }
+        .test-item h3 {
+            margin-top: 0;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .status.pass {
+            color: #4CAF50;
+        }
+        .status.fail {
+            color: #F44336;
+        }
+        .status.pending {
+            color: #FF9800;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #0b7dda;
+        }
+        .notes {
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Design Editor Test Plan</h1>
+    
+    <div class="test-section">
+        <h2>Element Creation Tests</h2>
+        
+        <div class="test-item">
+            <h3>Text Element Creation</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Click on the Text tool in the toolbar</li>
+                <li>Click on the canvas</li>
+                <li>Verify that a new text element appears at the clicked position</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Rectangle Element Creation</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Click on the Rectangle tool in the toolbar</li>
+                <li>Click on the canvas</li>
+                <li>Verify that a new rectangle element appears at the clicked position</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Circle Element Creation</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Click on the Circle tool in the toolbar</li>
+                <li>Click on the canvas</li>
+                <li>Verify that a new circle element appears at the clicked position</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Triangle Element Creation</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Click on the Triangle tool in the toolbar</li>
+                <li>Click on the canvas</li>
+                <li>Verify that a new triangle element appears at the clicked position</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Element Selection and Manipulation Tests</h2>
+        
+        <div class="test-item">
+            <h3>Element Selection</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Create multiple elements on the canvas</li>
+                <li>Click on each element</li>
+                <li>Verify that the clicked element becomes selected (shows selection indicators)</li>
+                <li>Verify that the properties panel updates to show the selected element's properties</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Element Dragging</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Select an element on the canvas</li>
+                <li>Click and drag the element to a new position</li>
+                <li>Verify that the element moves to the new position</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Element Resizing</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Select an element on the canvas</li>
+                <li>Click and drag one of the resize handles</li>
+                <li>Verify that the element resizes correctly</li>
+                <li>Test all resize handles (corners and sides)</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Property Editing Tests</h2>
+        
+        <div class="test-item">
+            <h3>Text Property Editing</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Create and select a text element</li>
+                <li>Edit the text content in the properties panel</li>
+                <li>Change font family, size, color, and alignment</li>
+                <li>Verify that changes are immediately reflected on the canvas</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Shape Property Editing</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Create and select a shape element</li>
+                <li>Change fill color, stroke color, and stroke width</li>
+                <li>Verify that changes are immediately reflected on the canvas</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Position and Size Editing</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Select any element</li>
+                <li>Edit the X, Y, width, and height values in the properties panel</li>
+                <li>Verify that the element updates its position and size accordingly</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Canvas Actions Tests</h2>
+        
+        <div class="test-item">
+            <h3>Delete Element</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Select an element on the canvas</li>
+                <li>Click the Delete button in the toolbar</li>
+                <li>Verify that the element is removed from the canvas</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Clear Canvas</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Add multiple elements to the canvas</li>
+                <li>Click the Clear button in the toolbar</li>
+                <li>Confirm the clear action in the dialog</li>
+                <li>Verify that all elements are removed from the canvas</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Export as PNG</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Add elements to the canvas</li>
+                <li>Click the Export button in the toolbar</li>
+                <li>Verify that the export dialog appears</li>
+                <li>Click the Export button in the dialog</li>
+                <li>Verify that the PNG file is downloaded</li>
+                <li>Open the downloaded file and verify it matches the canvas content</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Browser Compatibility Tests</h2>
+        
+        <div class="test-item">
+            <h3>Chrome Compatibility</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Open the application in Chrome</li>
+                <li>Test all core functionality</li>
+                <li>Verify that everything works as expected</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Firefox Compatibility</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Open the application in Firefox</li>
+                <li>Test all core functionality</li>
+                <li>Verify that everything works as expected</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Edge Compatibility</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Open the application in Edge</li>
+                <li>Test all core functionality</li>
+                <li>Verify that everything works as expected</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Responsive Design Tests</h2>
+        
+        <div class="test-item">
+            <h3>Desktop Layout</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Open the application on a desktop-sized screen</li>
+                <li>Verify that the layout is appropriate for desktop</li>
+                <li>Test all functionality</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Tablet Layout</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Open the application on a tablet-sized screen (or use responsive mode in browser)</li>
+                <li>Verify that the layout adapts appropriately</li>
+                <li>Test all functionality</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+        
+        <div class="test-item">
+            <h3>Mobile Layout</h3>
+            <p>Steps:</p>
+            <ol>
+                <li>Open the application on a mobile-sized screen (or use responsive mode in browser)</li>
+                <li>Verify that the layout adapts appropriately</li>
+                <li>Test all functionality</li>
+            </ol>
+            <p>Status: <span class="status pending">Pending</span></p>
+            <p class="notes">Notes: </p>
+        </div>
+    </div>
+    
+    <button id="openApp" onclick="window.open('index.html', '_blank')">Open Design Editor</button>
+    
+    <script>
+        // Add functionality to update test status
+        document.querySelectorAll('.test-item').forEach(item => {
+            const statusSpan = item.querySelector('.status');
+            const notesP = item.querySelector('.notes');
+            
+            // Add pass/fail buttons
+            const passBtn = document.createElement('button');
+            passBtn.textContent = 'Pass';
+            passBtn.style.backgroundColor = '#4CAF50';
+            passBtn.style.marginRight = '10px';
+            passBtn.onclick = () => {
+                statusSpan.textContent = 'Pass';
+                statusSpan.className = 'status pass';
+            };
+            
+            const failBtn = document.createElement('button');
+            failBtn.textContent = 'Fail';
+            failBtn.style.backgroundColor = '#F44336';
+            failBtn.onclick = () => {
+                statusSpan.textContent = 'Fail';
+                statusSpan.className = 'status fail';
+                
+                // Prompt for notes
+                const notes = prompt('Enter notes about the failure:');
+                if (notes) {
+                    notesP.textContent = 'Notes: ' + notes;
+                }
+            };
+            
+            // Add buttons to the item
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.marginTop = '10px';
+            buttonContainer.appendChild(passBtn);
+            buttonContainer.appendChild(failBtn);
+            item.appendChild(buttonContainer);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,723 @@
+# Frontend Design Editor - Implementation Guide for Interns
+
+This guide provides step-by-step instructions to build a frontend-only design editor that allows users to create designs with text and shapes in a web browser. Follow these instructions sequentially to deliver a working prototype.
+
+## Project Setup (Estimated time: 1 day)
+
+1. **Create Project Structure**
+   ```
+   design-editor/
+   ├── index.html
+   ├── css/
+   │   └── styles.css
+   ├── js/
+   │   ├── main.js
+   │   ├── canvas.js
+   │   ├── elements/
+   │   │   ├── baseElement.js
+   │   │   ├── textElement.js
+   │   │   └── shapeElement.js
+   │   ├── tools/
+   │   │   ├── toolManager.js
+   │   │   ├── selectionTool.js
+   │   │   └── shapeTool.js
+   │   └── ui/
+   │       ├── toolbar.js
+   │       └── propertiesPanel.js
+   └── assets/
+       └── icons/
+   ```
+
+2. **Setup HTML Boilerplate (index.html)**
+   ```html
+   
+   
+   
+       
+       
+       Design Editor
+       
+   
+   
+       
+           
+               
+           
+           
+               
+           
+           
+               
+           
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+   
+   
+   ```
+
+3. **Basic CSS Setup (styles.css)**
+   ```css
+   * {
+       margin: 0;
+       padding: 0;
+       box-sizing: border-box;
+   }
+
+   body {
+       font-family: Arial, sans-serif;
+       overflow: hidden;
+   }
+
+   .editor-container {
+       display: grid;
+       grid-template-columns: 1fr 3fr 1fr;
+       grid-template-rows: auto 1fr;
+       height: 100vh;
+   }
+
+   .toolbar {
+       grid-column: 1 / 4;
+       padding: 10px;
+       background-color: #f0f0f0;
+       border-bottom: 1px solid #ccc;
+       display: flex;
+       gap: 10px;
+   }
+
+   .toolbar button {
+       padding: 8px;
+       background-color: white;
+       border: 1px solid #ccc;
+       border-radius: 4px;
+       cursor: pointer;
+   }
+
+   .toolbar button.active {
+       background-color: #e0e0e0;
+   }
+
+   .workspace {
+       grid-column: 1 / 3;
+       overflow: auto;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       background-color: #e0e0e0;
+   }
+
+   #designCanvas {
+       background-color: white;
+       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+   }
+
+   .properties-panel {
+       grid-column: 3 / 4;
+       padding: 15px;
+       background-color: #f9f9f9;
+       border-left: 1px solid #ccc;
+       overflow-y: auto;
+   }
+
+   .properties-group {
+       margin-bottom: 15px;
+   }
+
+   .properties-group h3 {
+       margin-bottom: 8px;
+       font-size: 14px;
+   }
+
+   .property-row {
+       display: flex;
+       margin-bottom: 8px;
+       align-items: center;
+   }
+
+   .property-label {
+       width: 40%;
+       font-size: 12px;
+   }
+
+   .property-control {
+       width: 60%;
+   }
+   ```
+
+## Phase 1: Core Canvas Implementation (Estimated time: 2-3 days)
+
+1. **Create the Base Element Class (baseElement.js)**
+   ```javascript
+   class DesignElement {
+       constructor(type, x, y) {
+           this.id = 'element_' + Date.now() + Math.floor(Math.random() * 1000);
+           this.type = type;
+           this.x = x;
+           this.y = y;
+           this.width = 100;
+           this.height = 50;
+           this.rotation = 0;
+           this.selected = false;
+           this.zIndex = 1;
+       }
+       
+       draw(ctx) {
+           // Base drawing functionality
+           if (this.selected) {
+               // Draw selection handles
+               ctx.setLineDash([5, 5]);
+               ctx.strokeStyle = '#0078d7';
+               ctx.strokeRect(
+                   this.x - 5, 
+                   this.y - 5, 
+                   this.width + 10, 
+                   this.height + 10
+               );
+               ctx.setLineDash([]);
+               
+               // Draw resize handles
+               this.drawResizeHandles(ctx);
+           }
+       }
+       
+       drawResizeHandles(ctx) {
+           const handlePositions = [
+               { x: this.x, y: this.y }, // top-left
+               { x: this.x + this.width / 2, y: this.y }, // top-center
+               { x: this.x + this.width, y: this.y }, // top-right
+               { x: this.x + this.width, y: this.y + this.height / 2 }, // middle-right
+               { x: this.x + this.width, y: this.y + this.height }, // bottom-right
+               { x: this.x + this.width / 2, y: this.y + this.height }, // bottom-center
+               { x: this.x, y: this.y + this.height }, // bottom-left
+               { x: this.x, y: this.y + this.height / 2 } // middle-left
+           ];
+           
+           ctx.fillStyle = '#ffffff';
+           ctx.strokeStyle = '#0078d7';
+           
+           handlePositions.forEach(pos => {
+               ctx.beginPath();
+               ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2);
+               ctx.fill();
+               ctx.stroke();
+           });
+       }
+       
+       isPointInside(x, y) {
+           return (
+               x >= this.x &&
+               x = this.y &&
+               y = 0; i--) {
+                   const element = this.elements[i];
+                   if (element.isPointInside(x, y)) {
+                       // Deselect previous element
+                       if (this.selectedElement) {
+                           this.selectedElement.selected = false;
+                       }
+                       
+                       // Select new element
+                       this.selectedElement = element;
+                       element.selected = true;
+                       this.isDragging = true;
+                       
+                       // Update properties panel
+                       updatePropertiesPanel(element);
+                       
+                       this.render();
+                       return;
+                   }
+               }
+               
+               // If we get here, we clicked on empty canvas
+               if (this.selectedElement) {
+                   this.selectedElement.selected = false;
+                   this.selectedElement = null;
+                   updatePropertiesPanel(null);
+                   this.render();
+               }
+           } else if (this.activeTool === 'text') {
+               // Create a new text element
+               const newText = new TextElement(x, y);
+               this.elements.push(newText);
+               
+               // Select the new element
+               if (this.selectedElement) {
+                   this.selectedElement.selected = false;
+               }
+               this.selectedElement = newText;
+               newText.selected = true;
+               
+               // Update properties panel
+               updatePropertiesPanel(newText);
+               
+               this.render();
+           } else if (this.activeTool.startsWith('shape_')) {
+               // Extract shape type from tool name (e.g., shape_rectangle -> rectangle)
+               const shapeType = this.activeTool.split('_')[1];
+               
+               // Create a new shape element
+               const newShape = new ShapeElement(x, y, shapeType);
+               this.elements.push(newShape);
+               
+               // Select the new element
+               if (this.selectedElement) {
+                   this.selectedElement.selected = false;
+               }
+               this.selectedElement = newShape;
+               newShape.selected = true;
+               
+               // Update properties panel
+               updatePropertiesPanel(newShape);
+               
+               this.render();
+           }
+       }
+       
+       handleMouseMove(e) {
+           const rect = this.canvas.getBoundingClientRect();
+           const x = e.clientX - rect.left;
+           const y = e.clientY - rect.top;
+           
+           // Update cursor based on hover state
+           this.updateCursor(x, y);
+           
+           if (!this.isDragging) return;
+           
+           const dx = x - this.dragStart.x;
+           const dy = y - this.dragStart.y;
+           
+           if (this.resizeHandle) {
+               // Resize the selected element
+               this.selectedElement.resize(this.resizeHandle.position, dx, dy);
+               this.dragStart = { x, y };
+               this.render();
+               updatePropertiesPanel(this.selectedElement);
+           } else if (this.selectedElement) {
+               // Move the selected element
+               this.selectedElement.x += dx;
+               this.selectedElement.y += dy;
+               this.dragStart = { x, y };
+               this.render();
+               updatePropertiesPanel(this.selectedElement);
+           }
+       }
+       
+       handleMouseUp() {
+           this.isDragging = false;
+           this.resizeHandle = null;
+       }
+       
+       updateCursor(x, y) {
+           // Default cursor
+           this.canvas.style.cursor = 'default';
+           
+           if (this.activeTool !== 'select') {
+               this.canvas.style.cursor = 'crosshair';
+               return;
+           }
+           
+           // Check if hovering over a resize handle
+           if (this.selectedElement) {
+               const handle = this.selectedElement.getResizeHandleAt(x, y);
+               if (handle) {
+                   this.canvas.style.cursor = handle.cursor;
+                   return;
+               }
+           }
+           
+           // Check if hovering over any element
+           for (let i = this.elements.length - 1; i >= 0; i--) {
+               if (this.elements[i].isPointInside(x, y)) {
+                   this.canvas.style.cursor = 'move';
+                   return;
+               }
+           }
+       }
+       
+       setActiveTool(tool) {
+           this.activeTool = tool;
+       }
+       
+       render() {
+           // Clear canvas
+           this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+           
+           // Draw grid (optional)
+           this.drawGrid();
+           
+           // Sort elements by z-index
+           const sortedElements = [...this.elements].sort((a, b) => a.zIndex - b.zIndex);
+           
+           // Draw all elements
+           sortedElements.forEach(element => element.draw(this.ctx));
+       }
+       
+       drawGrid() {
+           const gridSize = 20;
+           this.ctx.strokeStyle = '#f0f0f0';
+           this.ctx.lineWidth = 1;
+           
+           // Draw vertical lines
+           for (let x = 0; x  a.zIndex - b.zIndex);
+           sortedElements.forEach(element => element.draw(tempCtx));
+           
+           // Restore selection
+           if (selectedElement) selectedElement.selected = true;
+           
+           // Create download link
+           const link = document.createElement('a');
+           link.download = 'design.png';
+           link.href = tempCanvas.toDataURL('image/png');
+           link.click();
+       }
+   }
+   ```
+
+## Phase 2: User Interface Implementation (Estimated time: 2 days)
+
+1. **Create Toolbar Manager (toolbar.js)**
+   ```javascript
+   function setupToolbar() {
+       const toolbar = document.getElementById('toolbar');
+       
+       // Create tool buttons
+       const tools = [
+           { id: 'select', icon: '↖️', label: 'Select' },
+           { id: 'text', icon: 'T', label: 'Text' },
+           { id: 'shape_rectangle', icon: '⬜', label: 'Rectangle' },
+           { id: 'shape_circle', icon: '⭕', label: 'Circle' },
+           { id: 'shape_line', icon: '/', label: 'Line' }
+       ];
+       
+       tools.forEach(tool => {
+           const button = document.createElement('button');
+           button.id = `tool-${tool.id}`;
+           button.innerHTML = tool.icon;
+           button.title = tool.label;
+           button.addEventListener('click', () => {
+               // Deactivate all tools
+               document.querySelectorAll('#toolbar button').forEach(btn => {
+                   btn.classList.remove('active');
+               });
+               
+               // Activate selected tool
+               button.classList.add('active');
+               canvasManager.setActiveTool(tool.id);
+           });
+           
+           toolbar.appendChild(button);
+       });
+       
+       // Add export button
+       const exportButton = document.createElement('button');
+       exportButton.innerHTML = '💾';
+       exportButton.title = 'Export Design';
+       exportButton.style.marginLeft = 'auto';
+       exportButton.addEventListener('click', () => {
+           canvasManager.exportImage();
+       });
+       toolbar.appendChild(exportButton);
+       
+       // Activate select tool by default
+       document.getElementById('tool-select').classList.add('active');
+   }
+   ```
+
+2. **Create Properties Panel (propertiesPanel.js)**
+   ```javascript
+   function updatePropertiesPanel(element) {
+       const panel = document.getElementById('propertiesPanel');
+       panel.innerHTML = '';
+       
+       if (!element) {
+           panel.innerHTML = 'No element selected';
+           return;
+       }
+       
+       const properties = element.getProperties();
+       
+       // Create header
+       const header = document.createElement('h2');
+       header.textContent = element.type.charAt(0).toUpperCase() + element.type.slice(1) + ' Properties';
+       panel.appendChild(header);
+       
+       // Create property controls
+       Object.entries(properties).forEach(([key, prop]) => {
+           const group = document.createElement('div');
+           group.className = 'property-row';
+           
+           const label = document.createElement('div');
+           label.className = 'property-label';
+           label.textContent = prop.label;
+           
+           const control = document.createElement('div');
+           control.className = 'property-control';
+           
+           let input;
+           
+           switch (prop.type) {
+               case 'number':
+                   input = document.createElement('input');
+                   input.type = 'number';
+                   input.value = prop.value;
+                   input.addEventListener('change', () => {
+                       canvasManager.updateElementProperty(key, parseFloat(input.value));
+                   });
+                   break;
+                   
+               case 'text':
+                   input = document.createElement('input');
+                   input.type = 'text';
+                   input.value = prop.value;
+                   input.addEventListener('change', () => {
+                       canvasManager.updateElementProperty(key, input.value);
+                   });
+                   break;
+                   
+               case 'color':
+                   input = document.createElement('input');
+                   input.type = 'color';
+                   input.value = prop.value;
+                   input.addEventListener('change', () => {
+                       canvasManager.updateElementProperty(key, input.value);
+                   });
+                   break;
+                   
+               case 'checkbox':
+                   input = document.createElement('input');
+                   input.type = 'checkbox';
+                   input.checked = prop.value;
+                   input.addEventListener('change', () => {
+                       canvasManager.updateElementProperty(key, input.checked);
+                   });
+                   break;
+                   
+               case 'select':
+                   input = document.createElement('select');
+                   prop.options.forEach(option => {
+                       const optEl = document.createElement('option');
+                       optEl.value = option;
+                       optEl.textContent = option;
+                       input.appendChild(optEl);
+                   });
+                   input.value = prop.value;
+                   input.addEventListener('change', () => {
+                       canvasManager.updateElementProperty(key, input.value);
+                   });
+                   break;
+           }
+           
+           control.appendChild(input);
+           group.appendChild(label);
+           group.appendChild(control);
+           panel.appendChild(group);
+       });
+       
+       // Add delete button
+       const deleteBtn = document.createElement('button');
+       deleteBtn.textContent = 'Delete Element';
+       deleteBtn.style.marginTop = '20px';
+       deleteBtn.addEventListener('click', () => {
+           canvasManager.elements = canvasManager.elements.filter(el => el !== element);
+           canvasManager.selectedElement = null;
+           updatePropertiesPanel(null);
+           canvasManager.render();
+       });
+       panel.appendChild(deleteBtn);
+   }
+   ```
+
+3. **Create Main Application Script (main.js)**
+   ```javascript
+   // Global variables
+   let canvasManager;
+
+   // Initialize the application
+   function initApp() {
+       // Initialize canvas manager
+       canvasManager = new CanvasManager();
+       
+       // Set up toolbar
+       setupToolbar();
+       
+       // Initial properties panel state
+       updatePropertiesPanel(null);
+       
+       // Start animation loop
+       requestAnimationFrame(animationLoop);
+   }
+
+   // Animation loop for smooth rendering
+   function animationLoop() {
+       canvasManager.render();
+       requestAnimationFrame(animationLoop);
+   }
+
+   // Start the application when the DOM is fully loaded
+   document.addEventListener('DOMContentLoaded', initApp);
+   ```
+
+## Phase 3: Testing and Debugging (Estimated time: 2 days)
+
+1. **Functional Tests to Perform**
+
+   Create a test plan covering these core functionalities:
+
+   **Canvas & Elements**
+   - [ ] Canvas loads and displays properly
+   - [ ] Grid renders accurately
+   - [ ] Text elements can be created and display correctly
+   - [ ] Shape elements (rectangle, circle, line) render properly
+   - [ ] Elements can be selected and deselected
+
+   **Element Manipulation**
+   - [ ] Elements can be moved by dragging
+   - [ ] Elements can be resized using handles
+   - [ ] Element properties update in real-time
+   - [ ] Elements maintain correct appearance after transformations
+
+   **Tools**
+   - [ ] Selection tool works correctly
+   - [ ] Text tool creates proper text elements
+   - [ ] Shape tools create the correct shapes
+   - [ ] Tool switching works properly
+
+   **Properties Panel**
+   - [ ] Properties panel updates when elements are selected
+   - [ ] Property changes reflect on the canvas
+   - [ ] Font and shape-specific properties work
+   - [ ] Delete button properly removes elements
+
+   **Export**
+   - [ ] Image export produces correct PNG files
+   - [ ] Exported images don't show selection handles
+
+2. **Common Bug Fixes**
+
+   **Text Measuring Issues**
+   ```javascript
+   // Problem: Text width not calculating correctly
+   // Fix: In TextElement class, update the draw method
+   draw(ctx) {
+       // Set font styles first, before measuring
+       let fontStyle = '';
+       if (this.bold) fontStyle += 'bold ';
+       if (this.italic) fontStyle += 'italic ';
+       ctx.font = `${fontStyle}${this.size}px ${this.font}`;
+       
+       // Measure text for accurate bounding box
+       const metrics = ctx.measureText(this.text);
+       this.width = metrics.width;
+       this.height = this.size * 1.2; // Approx height
+       
+       // Now draw the text
+       ctx.fillStyle = this.color;
+       ctx.textBaseline = 'top';
+       ctx.textAlign = this.alignment;
+       
+       // Adjust position based on alignment
+       let xPos = this.x;
+       if (this.alignment === 'center') xPos = this.x + this.width / 2;
+       if (this.alignment === 'right') xPos = this.x + this.width;
+       
+       ctx.fillText(this.text, xPos, this.y);
+       
+       // Draw selection if selected
+       super.draw(ctx);
+   }
+   ```
+
+   **Element Selection Issue**
+   ```javascript
+   // Problem: Elements underneath cannot be selected
+   // Fix: In the handleMouseDown method of CanvasManager
+   
+   // Sort elements by z-index in reverse for selection
+   const selectableElements = [...this.elements].sort((a, b) => b.zIndex - a.zIndex);
+   
+   for (const element of selectableElements) {
+       if (element.isPointInside(x, y)) {
+           // Selection logic
+           break;
+       }
+   }
+   ```
+
+   **Resize Handle Hitbox Issue**
+   ```javascript
+   // Problem: Resize handles difficult to click
+   // Fix: In the getResizeHandleAt method of DesignElement
+   
+   getResizeHandleAt(x, y) {
+       // Increase hit area from 6 to 8 pixels
+       const hitRadius = 8;
+       
+       const handlePositions = [
+           // ... handle definitions
+       ];
+       
+       for (const handle of handlePositions) {
+           if (Math.sqrt((x - handle.x) ** 2 + (y - handle.y) ** 2)  a.zIndex - b.zIndex);
+       
+       // Draw all elements
+       sortedElements.forEach(element => element.draw(this.ctx));
+   }
+   ```
+
+3. **Cross-Browser Testing**
+
+   Test the editor in:
+   - Chrome
+   - Firefox
+   - Safari
+   - Edge
+
+   Pay special attention to:
+   - Canvas rendering differences
+   - Event handling behavior
+   - Font rendering
+   - Color picker compatibility
+
+## Final Steps and Deliverables (Estimated time: 1 day)
+
+1. **Code Cleanup**
+   - Remove console.log statements
+   - Add code comments for clarity
+   - Ensure consistent code style
+   - Optimize performance bottlenecks
+
+2. **Documentation**
+   - Document known limitations
+   - Create usage instructions
+   - List potential future enhancements
+
+3. **Final Deliverables**
+   - Working prototype code repository
+   - Demo page deployed to GitHub Pages (optional)
+   - Documentation file
+   - Test results summary
+
+## Total Estimated Timeline
+
+- Project Setup: 1 day
+- Core Canvas Implementation: 2-3 days
+- User Interface Implementation: 2 days
+- Testing and Debugging: 2 days
+- Final Steps and Deliverables: 1 day
+
+**Total: 8-9 working days**
+
+This timeline assumes a dedicated intern with basic knowledge of HTML, CSS, and JavaScript. The work may be completed faster if the intern has experience with canvas manipulation or slower if they need to learn these concepts.
+
+---
+Answer from Perplexity: pplx.ai/share
